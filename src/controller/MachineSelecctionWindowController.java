@@ -36,8 +36,7 @@ public class MachineSelecctionWindowController implements Initializable{
     	nextWindow("Moore", event);
     }
 
-	private void nextWindow(String type, ActionEvent event) {
-		
+	private void nextWindow(String type, ActionEvent event) {		
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("/application/EntriesStatesWindow.fxml"));
 		Parent root = null;
