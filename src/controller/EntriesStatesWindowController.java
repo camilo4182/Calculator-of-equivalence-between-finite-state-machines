@@ -35,7 +35,7 @@ public class EntriesStatesWindowController implements Initializable{
 	
 	private void nextWindow() {
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("/application/TablesCalculateWindow.fxml"));
+		loader.setLocation(getClass().getResource("/application/TablesWindow.fxml"));
 		Parent root = null;
 		try {
 			root = loader.load();
