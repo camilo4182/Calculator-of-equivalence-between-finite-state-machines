@@ -18,7 +18,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class EntriesStatesWindowController implements Initializable{
@@ -29,18 +32,43 @@ public class EntriesStatesWindowController implements Initializable{
 	private int statesM1;
 	private int statesM2;
 	private String machineType;
+	
 	final Button saveButton = new Button("Calculate Equivalence");
 	private final EventHandler<ActionEvent> saveBtnClicked = new EventHandler<ActionEvent>() {
 		
 		public void handle(final ActionEvent Event) {
 		
-			TextField temp = (TextField) gridM1.lookup("text,"+1+1);
+			if(!checkNulls()) {
+				
+             // format without nulls
+				
+			}
+			else {
+				
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setContentText("Machines not completed");
+				alert.showAndWait();
+			}
 			
-			System.out.print(""+temp.getText());
+			//showResult(true);
 			
 		}	
 	
 	};
+	
+	private void showResult(boolean equivalent) {
+		
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		if(equivalent==true) {
+			alert.setContentText("The machines are equivalent");
+		}
+		else {
+			alert.setContentText("The machines are not equivalent");
+		}
+    	
+    	alert.showAndWait();
+	    
+	}
 	
 	@FXML
 	private Button accept_btn;
@@ -95,16 +123,16 @@ public class EntriesStatesWindowController implements Initializable{
 				tablesGrid.add(gridM1, 0, 0);
 				tablesGrid.add(gridM2, 1, 0);
 				
-				saveButton.setOnAction(saveBtnClicked);
 				buttonGrid.setAlignment(Pos.CENTER);
-				buttonGrid.add(saveButton, 0, 0);
 				
 				gridM1.setPadding(new Insets(20));
 				gridM2.setPadding(new Insets(20));
 				
-				addThings(gridM1,statesM1,entries,machineType);
-				addThings(gridM2,statesM2,entries,machineType);
+				addThings(gridM1,statesM1,entries,machineType,"M1");
+				addThings(gridM2,statesM2,entries,machineType,"M2");
 				
+				saveButton.setOnAction(saveBtnClicked);
+				buttonGrid.add(saveButton, 0, 0);
 				
 				Scene scene = new Scene(root);
 				stage.setTitle("tablas");
@@ -130,7 +158,7 @@ public class EntriesStatesWindowController implements Initializable{
 		this.numberStatesM2_Spinner.setValueFactory(values3);
 	}
 	
-   public void addThings(GridPane g, int states, int entries, String type) {
+   public void addThings(GridPane g, int states, int entries, String type,String id) {
 		
     	int columns=entries;
     	int rows=states;
@@ -169,8 +197,8 @@ public class EntriesStatesWindowController implements Initializable{
 						tf.setDisable(true);
 					}
 				}
-				
-				tf.setId("text,"+i+j);
+			
+				tf.setId("text"+id+i+","+j);
 				g.add(tf, j, i);
 			
 			}
@@ -183,5 +211,106 @@ public class EntriesStatesWindowController implements Initializable{
          machineType=type;
 		
 	}
+
+private boolean checkNulls() {
+		
+		boolean nulls=false;
+		
+		if(machineType=="Moore") {
+			
+			for(int i=0;i<statesM1+1 && !nulls;i++) {
+				for(int j=0;j<entries+1 && !nulls;j++) {
+					
+					TextField temp = (TextField) gridM1.lookup("#textM1"+i+","+j);
+					
+					if(i==0 && j==0 || i==0 && j==entries+1) {
+						
+					}
+					else {
+						if(temp==null) {
+							nulls=true;
+						}
+						else {
+							if(temp.getText()==null || temp.getText().equals("") || temp.getText().equals(" ")) {
+								nulls=true;
+							}
+						}
+					}
+					
+				}
+			}
+			
+			for(int i=0;i<statesM2+1 && !nulls;i++) {
+				for(int j=0;j<entries+1;j++) {
+					
+                    TextField temp = (TextField) gridM2.lookup("#textM2"+i+","+j);
+					
+					if(i==0 && j==0 || i==0 && j==entries+1) {
+						
+					}
+					else {
+						if(temp==null) {
+							nulls=true;
+						}
+						else {
+							if(temp.getText()==null || temp.getText().equals("") || temp.getText().equals(" ")) {
+								nulls=true;
+							}
+						}
+					}
+					
+				}
+			}
+			
+		}
+		else {
+			
+			for(int i=0;i<statesM1+1 && !nulls;i++) {
+				for(int j=0;j<entries+1 && !nulls;j++) {
+					
+					TextField temp = (TextField) gridM1.lookup("#textM1"+i+","+j);
+					
+					if(i!=0 || j!=0) {
+						
+						if(temp==null) {
+							nulls=true;
+						}
+						else {		
+							//System.out.print("\n m1 i="+i+" j="+j+" == "+temp.getText());
+							if(temp.getText()==null || temp.getText().equals("") || temp.getText().equals(" ")) {
+								nulls=true;
+							}
+						}
+						
+					}
+					
+				}
+			}
+			
+			for(int i=0;i<statesM2+1 && !nulls;i++) {
+				for(int j=0;j<entries+1 && !nulls;j++) {
+					
+                    TextField temp = (TextField) gridM2.lookup("#textM2"+i+","+j);
+					
+					if(i!=0 || j!=0) {
+						if(temp==null) {
+							nulls=true;
+						}
+						else {
+							if(temp.getText()==null || temp.getText().equals("") || temp.getText().equals(" ")) {
+								nulls=true;
+							}
+						}
+						
+					}
+					
+				}
+			}
+			
+		}
+		
+		return nulls;
+	}
+
 
 }

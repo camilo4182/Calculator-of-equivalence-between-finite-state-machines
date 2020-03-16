@@ -10,6 +10,9 @@ import java.util.HashMap;
  */
 
 public class FiniteStateMachine {
+	
+	public final static int MEALY_MACHINE = 1;
+	public final static int MOORE_MACHINE = 2;
 
 	private int type;
 	private String name;
@@ -116,16 +119,42 @@ public class FiniteStateMachine {
 	 * Returns the HashMap which is the transition function f.
 	 * @return f: HashMap<String, State> - the transition function f.
 	 */
-	public HashMap<String, State> getHashMap(){
+	public HashMap<String, State> getHashMapF(){
 		return f;
 	}
 	
+	public HashMap<String, Character> getHashMapG(){
+		return g;
+	}
+	
 	/**
-	 * This method is the output function of the automaton. 
+	 * This method sets the output function of the Mealy automaton.
 	 */
-	public void setOutputFunction(String stateKeyName, char s, char r) {
+	public void setOutputFunctionMealy(String stateKeyName, char s, char r) {
 		String key = stateKeyName + s;
 		g.put(key, r);
+	}
+	
+	/**
+	 * This method sets the output function of the Moore automaton.
+	 */
+	public void setOutputFunctionMoore(String stateKeyName, char r) {
+		String key = stateKeyName;
+		g.put(key, r);
+	}
+	
+	/**
+	 * This method is the output function of the Mealy automaton. 
+	 */
+	public char g(String name, char s) {
+		return g.get(name + s);
+	}
+	
+	/**
+	 * This method is the output function of the Moore automaton. 
+	 */
+	public char h(String name) {
+		return g.get(name);
 	}
 	
 	/**
@@ -150,5 +179,9 @@ public class FiniteStateMachine {
 
 	public State getInitialState() {
 		return initialState;
+	}
+	
+	public void setStatesSet(ArrayList<State> q) {
+		states = q;
 	}
 }

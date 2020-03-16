@@ -179,4 +179,9 @@ class EquivalenceCalculatorTest {
 		assertEquals("N1", m2.getStates().get(1).getName());
 		assertEquals("N2", m2.getStates().get(2).getName());		
 	}
+	
+	@Test
+	void directSumTest() {
+		
+	}
 }

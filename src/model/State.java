@@ -9,6 +9,7 @@ package model;
 public class State {
 
 	private String name;
+	private boolean inBlock;
 
 	public State(String name) {
 		this.name = name;
@@ -38,6 +39,14 @@ public class State {
 	 */
 	public String getKey(char s) {
 		return name + s;
+	}
+	
+	public void setInBlock(boolean b) {
+		inBlock = b;
+	}
+	
+	public boolean isInBlock() {
+		return inBlock;
 	}
 	
 	/**

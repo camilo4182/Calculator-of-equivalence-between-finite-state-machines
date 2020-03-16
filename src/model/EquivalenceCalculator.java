@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
+
 /**
  * This class will be responsible for executing the partition algorithm.
  * @author johan
@@ -13,6 +15,8 @@ public class EquivalenceCalculator {
 	private FiniteStateMachine m1, m2;
 	private ArrayList<Character> S1, S2, R1, R2; // These are input and output alphabets of the two machines
 	private ArrayList<State> accessibleStatesM1, accessibleStatesM2; // The accessible states of the two machines
+	private ArrayList<State> directSumStates; // The direct sum between M1 and M2
+	private FiniteStateMachine directSumMachine;
 	
 	public EquivalenceCalculator(FiniteStateMachine m1, FiniteStateMachine m2) {
 		this.m1 = m1;
@@ -23,6 +27,8 @@ public class EquivalenceCalculator {
 		R2 = null;
 		accessibleStatesM1 = new ArrayList<State>();
 		accessibleStatesM2 = new ArrayList<State>();
+		directSumStates = new ArrayList<State>();
+		directSumMachine = new FiniteStateMachine(m1.getType(), "Sum");
 	}
 	
 	/**
@@ -137,10 +143,71 @@ public class EquivalenceCalculator {
 	}
 	
 	/**
+	 * Makes the direct sum between M1 and M2
+	 */
+	public void directSum() {
+		directSumStates.addAll(accessibleStatesM1);
+		directSumStates.addAll(accessibleStatesM2);
+		directSumMachine.setStatesSet(directSumStates);
+		directSumMachine.getHashMapF().putAll(m1.getHashMapF());
+		directSumMachine.getHashMapF().putAll(m2.getHashMapF());
+		directSumMachine.getHashMapG().putAll(m1.getHashMapG());
+		directSumMachine.getHashMapG().putAll(m2.getHashMapG());
+	}
+	
+	/**
 	 * Partition algorithm
 	 */
 	public boolean PartitionAlgorithm() {
-	
+		ArrayList<ArrayList<State>> P = firstPartition();
+		
 		return false;
 	}
+	
+	/**
+	 * 
+	 */
+	public ArrayList<ArrayList<State>> firstPartition(){
+		ArrayList<ArrayList<State>> P = new ArrayList<ArrayList<State>>();
+		boolean finish = false;
+		while(!finish) {
+			int n = -1;
+			for(int i = 0; i < directSumMachine.getStates().size(); i++) {
+				State s = directSumMachine.getStates().get(i);
+				if(!s.isInBlock()) {
+					n++;
+					s.setInBlock(true);
+					P.get(n).add(s);
+					for(int j = i + 1; j < directSumMachine.getStates().size(); j++) {
+						State t = directSumMachine.getStates().get(j);
+						if(!t.isInBlock()) {
+							boolean stop = false;
+							for(int k = 0; k < S1.size() && !stop; k++) {
+								if(directSumMachine.getType() == FiniteStateMachine.MEALY_MACHINE) {
+									if(directSumMachine.g(s.getName(), S1.get(k)) != directSumMachine.g(t.getName(), S1.get(k))) {
+										stop = true;
+									}
+								}
+								else {
+									if(directSumMachine.h(s.getName()) != directSumMachine.h(t.getName())) {
+										stop = true;
+									}
+								}
+							}
+							if(!stop) {
+								t.setInBlock(true);
+								P.get(n).add(t);
+							}
+						}
+					}
+				}
+			}
+			finish = true;
+		}
+		return P;
+	}
+	
+	
+	
+	
 }
