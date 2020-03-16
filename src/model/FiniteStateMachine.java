@@ -127,7 +127,6 @@ public class FiniteStateMachine {
 		String key = stateKeyName + s;
 		g.put(key, r);
 	}
-<<<<<<< HEAD
 	
 	/**
 	 * Returns the input alphabet of the machine
@@ -144,7 +143,12 @@ public class FiniteStateMachine {
 	public ArrayList<Character> getOutputAlphabet() {
 		return R;
 	}
+	
+	public void setInitialState() {
+		initialState = states.get(0);
+	}
 
-=======
->>>>>>> dcbf625101e8e1b2484987f7f4b9f3dab7c6e97a
+	public State getInitialState() {
+		return initialState;
+	}
 }

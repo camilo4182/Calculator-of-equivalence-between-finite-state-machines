@@ -1,7 +1,6 @@
 package test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import java.util.HashMap;
 import org.junit.jupiter.api.Test;
 import model.FiniteStateMachine;
 
@@ -44,8 +43,8 @@ class FiniteStateMachineTest {
 		m1.setTransitionFunction("C", '1', "D");
 		m1.setTransitionFunction("D", '0', "B");
 		m1.setTransitionFunction("D", '1', "A");
-		assertEquals("A", m1.transition("A", '0').toString());
-		assertEquals("A", m1.transition("D", '1').toString());
+		assertEquals("A", m1.transition("A", '0').getName());
+		assertEquals("A", m1.transition("D", '1').getName());
 		System.out.println(m1.getHashMap());
 	}
 
