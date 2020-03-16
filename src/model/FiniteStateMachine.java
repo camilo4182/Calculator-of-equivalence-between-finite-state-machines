@@ -53,21 +53,6 @@ public class FiniteStateMachine {
 	}
 	
 	/**
-	 * Assigns the state at the position zero to be the initial state
-	 */
-	public void setInitialState() {
-		initialState = states.get(0);
-	}
-	
-	/**
-	 * Returns the initial state of the machine
-	 * @return initialState: State
-	 */
-	public State getInitialState() {
-		return initialState;
-	}
-	
-	/**
 	 * Returns the index of the state that has the name given as the input.
 	 * @param name - the name of the state being searched
 	 * @return the index of the position in which the state is. If it is -1, then the state is not in the ArrayLis.
@@ -142,20 +127,4 @@ public class FiniteStateMachine {
 		String key = stateKeyName + s;
 		g.put(key, r);
 	}
-	
-	/**
-	 * Returns the input alphabet of the machine
-	 * @return S: ArrayList<Character>
-	 */
-	public ArrayList<Character> getInputAlphabet(){
-		return S;
-	}
-
-	/**
-	 * Returns the output alphabet of the machine
-	 * @return R: ArrayList<Character>
-	 */
-	public ArrayList<Character> getOutputAlphabet() {
-		return R;
-	}	
 }
