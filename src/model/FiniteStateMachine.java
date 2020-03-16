@@ -157,5 +157,6 @@ public class FiniteStateMachine {
 	 */
 	public ArrayList<Character> getOutputAlphabet() {
 		return R;
-	}	
+	}
+
 }

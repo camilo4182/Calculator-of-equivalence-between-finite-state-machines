@@ -22,9 +22,23 @@ public class EquivalenceCalculator {
 		R1 = null;
 		R2 = null;
 		accessibleStatesM1 = new ArrayList<State>();
-		accessibleStatesM1.add(m1.getInitialState());
 		accessibleStatesM2 = new ArrayList<State>();
-		accessibleStatesM2.add(m2.getInitialState());
+	}
+	
+	/**
+	 * Returns the array that contains the accessible states of M1 from its initial state.
+	 * @return accessibleStatesM1: ArrayList<State>
+	 */
+	public ArrayList<State> getAccessibleStatesM1(){
+		return accessibleStatesM1;
+	}
+	
+	/**
+	 * Returns the array that contains the accessible states of M2 from its initial state.
+	 * @return accessibleStatesM2: ArrayList<State>
+	 */
+	public ArrayList<State> getAccessibleStatesM2(){
+		return accessibleStatesM2;
 	}
 	
 	/**
@@ -77,10 +91,49 @@ public class EquivalenceCalculator {
 	}
 	
 	/**
-	 * Eliminates the inaccessible states from the initial state
+	 * Eliminates the inaccessible states from the initial state of the machine M1
 	 */
-	public void eliminateInaccessibleStates() {
-		
+	public void eliminateInaccessibleStatesFromM1() {
+		accessibleStatesM1.add(m1.getInitialState());
+		for(int i = 0; i < accessibleStatesM1.size(); i++) {
+			State accessibleState = accessibleStatesM1.get(i);
+			for(int j = 0; j < S1.size(); j++) {
+				State temp = m1.transition(accessibleState.getName(), S1.get(j));
+				if(!accessibleStatesM1.contains(temp))
+					accessibleStatesM1.add(temp);
+			}
+		}
+	}
+	
+	/**
+	 * Eliminates the inaccessible states from the initial state of the machine M2
+	 */
+	public void eliminateInaccessibleStatesFromM2() {
+		accessibleStatesM2.add(m2.getInitialState());
+		for(int i = 0; i < accessibleStatesM2.size(); i++) {
+			State accessibleState = accessibleStatesM2.get(i);
+			for(int j = 0; j < S1.size(); j++) {
+				State temp = m2.transition(accessibleState.getName(), S1.get(j));
+				if(!accessibleStatesM2.contains(temp))
+					accessibleStatesM2.add(temp);
+			}	
+		}
+	}
+	
+	/**
+	 * Changes the state's names of the two machines.
+	 */
+	public void changeStateNames() {
+		for(int i = 0; i < accessibleStatesM1.size(); i++) {
+			State s = accessibleStatesM1.get(i);
+			for(int j = 0; j < accessibleStatesM2.size(); j++) {
+				State t = accessibleStatesM2.get(j);
+				if(s.getName().equals(t.getName())) {
+					s.setName(m1.getName() + i);
+					t.setName(m2.getName() + j);
+				}
+			}
+		}
 	}
 	
 	/**
