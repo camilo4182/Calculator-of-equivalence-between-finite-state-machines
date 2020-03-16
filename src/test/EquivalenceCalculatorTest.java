@@ -10,8 +10,8 @@ class EquivalenceCalculatorTest {
 	private FiniteStateMachine m1, m2;
 	
 	void case1() {
-		m1 = new FiniteStateMachine(0, "M");
-		m2 = new FiniteStateMachine(0, "N");
+		m1 = new FiniteStateMachine(1, "M");
+		m2 = new FiniteStateMachine(1, "N");
 		calc = new EquivalenceCalculator(m1, m2);
 	}
 	
@@ -107,6 +107,8 @@ class EquivalenceCalculatorTest {
 		m1.setTransitionFunction("C", '1', "B");
 		m1.setTransitionFunction("D", '0', "D");
 		m1.setTransitionFunction("D", '1', "A");
+		
+		
 		
 		m2.setTransitionFunction("E", '0', "C");
 		m2.setTransitionFunction("E", '1', "A");

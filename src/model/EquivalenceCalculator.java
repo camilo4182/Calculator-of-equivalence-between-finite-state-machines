@@ -28,7 +28,7 @@ public class EquivalenceCalculator {
 		accessibleStatesM1 = new ArrayList<State>();
 		accessibleStatesM2 = new ArrayList<State>();
 		directSumStates = new ArrayList<State>();
-		directSumMachine = new FiniteStateMachine(m1.getType(), "Sum");
+		directSumMachine = new FiniteStateMachine(m1.getType(), m1.getName() + m2.getName());
 	}
 	
 	/**
@@ -104,7 +104,7 @@ public class EquivalenceCalculator {
 		for(int i = 0; i < accessibleStatesM1.size(); i++) {
 			State accessibleState = accessibleStatesM1.get(i);
 			for(int j = 0; j < S1.size(); j++) {
-				State temp = m1.transition(accessibleState.getName(), S1.get(j));
+				State temp = m1.f(accessibleState.getName(), S1.get(j));
 				if(!accessibleStatesM1.contains(temp))
 					accessibleStatesM1.add(temp);
 			}
@@ -119,7 +119,7 @@ public class EquivalenceCalculator {
 		for(int i = 0; i < accessibleStatesM2.size(); i++) {
 			State accessibleState = accessibleStatesM2.get(i);
 			for(int j = 0; j < S1.size(); j++) {
-				State temp = m2.transition(accessibleState.getName(), S1.get(j));
+				State temp = m2.f(accessibleState.getName(), S1.get(j));
 				if(!accessibleStatesM2.contains(temp))
 					accessibleStatesM2.add(temp);
 			}	
@@ -151,8 +151,8 @@ public class EquivalenceCalculator {
 		directSumMachine.setStatesSet(directSumStates);
 		directSumMachine.getHashMapF().putAll(m1.getHashMapF());
 		directSumMachine.getHashMapF().putAll(m2.getHashMapF());
-		directSumMachine.getHashMapG().putAll(m1.getHashMapG());
-		directSumMachine.getHashMapG().putAll(m2.getHashMapG());
+		directSumMachine.getOutputFunctionHashMap().putAll(m1.getOutputFunctionHashMap());
+		directSumMachine.getOutputFunctionHashMap().putAll(m2.getOutputFunctionHashMap());
 	}
 	
 	/**

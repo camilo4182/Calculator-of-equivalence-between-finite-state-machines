@@ -10,6 +10,7 @@ public class State {
 
 	private String name;
 	private boolean inBlock;
+	private int numberBlock; // The index of a block in a partition
 
 	public State(String name) {
 		this.name = name;
@@ -41,12 +42,48 @@ public class State {
 		return name + s;
 	}
 	
+	/**
+	 * Modifies the value that says if the state is already in a block in a partition or not
+	 * @param b: boolean -  true if it is in a block of a partition
+	 * 						false if not
+	 */
 	public void setInBlock(boolean b) {
 		inBlock = b;
 	}
 	
+	/**
+	 * Indicates if the state is in a block.
+	 * @return inBlock: boolean - 	true if it is in a block of a partition
+	 * 								false if not
+	 */
 	public boolean isInBlock() {
 		return inBlock;
+	}
+
+	/**
+	 * Get the index of the block in which this state is
+	 * @return numberBlock: int - index of the block
+	 */
+	public int getNumberBlock() {
+		return numberBlock;
+	}
+
+	/**
+	 * Modifies the index of the block
+	 * @param numberBlock
+	 */
+	public void setNumberBlock(int numberBlock) {
+		this.numberBlock = numberBlock;
+	}
+	
+	/**
+	 * TO STRING
+	 * Overrides the toString method to show the name of this state
+	 * @return String - the state's name
+	 */
+	@Override
+	public String toString() {
+		return name;
 	}
 	
 	/**
